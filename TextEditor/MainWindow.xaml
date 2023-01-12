@@ -33,8 +33,11 @@
             Height="27"
             Width="190"
             HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-        />
+            VerticalAlignment="Top" SelectionChanged="search_cb_SelectionChanged" FontSize="16"
+        >
+            <ComboBoxItem Content="Naive" IsSelected="True"/>
+            <ComboBoxItem Content="Rabin-Karp"/>
+        </ComboBox>
 
         <TextBox
             x:Name="search_tb"

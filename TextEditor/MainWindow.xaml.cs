@@ -1,27 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using static System.Net.Mime.MediaTypeNames;
+using static TextEditor.StringSearch;
 
 namespace TextEditor;
 
 public partial class MainWindow : Window
 {
+    private AlgorithmType algorithmType;
+
     public MainWindow()
     {
+        algorithmType = AlgorithmType.Naive;
+
         InitializeComponent();
 
         string init_txt = "";
@@ -38,7 +33,7 @@ public partial class MainWindow : Window
         string pattern = search_tb.Text;
         string txt = getText(main_paragraph);
 
-        List<int> indices = StringSearch.NaiveSearch(txt, pattern);
+        List<int> indices = SearchString(txt, pattern, algorithmType);
         info_text.Text = "'" + pattern + "' ocurrances: " + indices.Count;
 
         setBoldText(main_paragraph, indices, pattern.Length);
@@ -72,8 +67,8 @@ public partial class MainWindow : Window
     private static string getText(Paragraph para)
     {
         return new TextRange(para.ContentStart, para.ContentEnd)
-              .Text
-              .Replace("\n", "");
+            .Text
+            .Replace("\n", "");
     }
 
     // Event handling.
@@ -95,6 +90,24 @@ public partial class MainWindow : Window
             TextPointer newPointer = main_rtb.Selection.Start.InsertLineBreak();
             main_rtb.Selection.Select(newPointer, newPointer);
             e.Handled = true;
+        }
+    }
+
+    private void search_cb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        ComboBoxItem selected = (ComboBoxItem) search_cb.SelectedItem;
+
+        switch (selected.Content.ToString())
+        {
+            case "Naive":
+                algorithmType = AlgorithmType.Naive;
+                break;
+            case "Rabin-Karp":
+                algorithmType = AlgorithmType.RabinKarp;
+                break;
+            default:
+                algorithmType = AlgorithmType.Naive;
+                break;
         }
     }
 }
