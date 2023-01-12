@@ -38,6 +38,7 @@
             <ComboBoxItem Content="Naive" IsSelected="True"/>
             <ComboBoxItem Content="Rabin-Karp"/>
             <ComboBoxItem Content="Boyer–Moore"/>
+            <ComboBoxItem Content="Regex"/>
         </ComboBox>
 
         <TextBox

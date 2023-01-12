@@ -108,6 +108,9 @@ public partial class MainWindow : Window
             case "Boyer–Moore":
                 algorithmType = AlgorithmType.BoyerMoore;
                 break;
+            case "Regex":
+                algorithmType = AlgorithmType.Regex;
+                break;
             default:
                 MessageBox.Show("Error.");
                 algorithmType = AlgorithmType.Naive;

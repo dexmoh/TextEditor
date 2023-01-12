@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Windows;
 
 namespace TextEditor;
 
@@ -9,7 +12,8 @@ internal class StringSearch
     {
         Naive,
         RabinKarp,
-        BoyerMoore
+        BoyerMoore,
+        Regex
     }
 
     public static List<int> SearchString (
@@ -19,7 +23,7 @@ internal class StringSearch
     {
         List<int> output = new List<int>();
 
-        if (pattern.Length > txt.Length)
+        if (pattern.Length > txt.Length || pattern.Length < 1)
             return output;
 
         switch (algorithmType)
@@ -32,6 +36,9 @@ internal class StringSearch
                 break;
             case AlgorithmType.BoyerMoore:
                 output = boyerMooreSearch(txt, pattern);
+                break;
+            case AlgorithmType.Regex:
+                output = regexSearch(txt, pattern);
                 break;
             default:
                 break;
@@ -150,5 +157,17 @@ internal class StringSearch
 
         for (int i = 0; i < size; i++)
             badChar[(int)txt[i]] = i;
+    }
+
+    // Regex.
+    private static List<int> regexSearch(string txt, string pattern)
+    {
+        var indices = new List<int>();
+        var regex = new Regex(pattern);
+
+        foreach (Match match in regex.Matches(txt))
+            indices.Add(match.Index);
+
+        return indices;
     }
 }
