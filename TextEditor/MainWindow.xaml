@@ -1,0 +1,51 @@
+﻿<Window
+    x:Class="TextEditor.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:TextEditor"
+    mc:Ignorable="d"
+    Title="Text Editor"
+    Height="500"
+    Width="900">
+
+    <Grid>
+        <RichTextBox x:Name="main_rtb" Margin="0,27,0,27" FontSize="14" Padding="2" PreviewKeyDown="main_rtb_KeyDown">
+            <FlowDocument>
+                <Paragraph x:Name="main_paragraph">
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+
+        <TextBlock x:Name="info_text"
+            TextWrapping="Wrap"
+            Text="Info bar."
+            VerticalAlignment="Bottom"
+            Height="27"
+            FontSize="14"
+            Padding="3"
+            Margin="0,407,0,0"
+        />
+
+        <ComboBox
+            x:Name="search_cb"
+            Height="27"
+            Width="190"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+        />
+
+        <TextBox
+            x:Name="search_tb"
+            Text=""
+            VerticalAlignment="Top"
+            Height="27"
+            Margin="190,0,143,0"
+            FontSize="14"
+            Padding="3"
+            KeyDown="search_tb_KeyDown"
+        />
+        <Button x:Name="search_button" Content="Search" VerticalAlignment="Top" Height="27" FontSize="16" HorizontalAlignment="Right" Width="143" Click="search_button_Click"/>
+    </Grid>
+</Window>
