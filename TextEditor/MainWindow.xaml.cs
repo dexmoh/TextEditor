@@ -33,8 +33,10 @@ public partial class MainWindow : Window
         string pattern = search_tb.Text;
         string txt = getText(main_paragraph);
 
-        List<int> indices = SearchString(txt, pattern, algorithmType);
-        info_text.Text = "'" + pattern + "' ocurrances: " + indices.Count;
+        (double time, List<int> indices) = SearchString(txt, pattern, algorithmType);
+        info_text.Text =
+            "['" + pattern + "' ocurrances: " + indices.Count +
+            "] [Time elapsed: " + time + "ms]";
 
         setBoldText(main_paragraph, indices, pattern.Length);
     }

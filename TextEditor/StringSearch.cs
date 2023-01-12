@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
-using System.Windows;
 
 namespace TextEditor;
 
@@ -16,7 +15,7 @@ internal class StringSearch
         Regex
     }
 
-    public static List<int> SearchString (
+    public static (double, List<int>) SearchString (
         string txt,
         string pattern,
         AlgorithmType algorithmType = AlgorithmType.Naive)
@@ -24,7 +23,11 @@ internal class StringSearch
         List<int> output = new List<int>();
 
         if (pattern.Length > txt.Length || pattern.Length < 1)
-            return output;
+            return (0.0, output);
+
+        // Time the execution time.
+        Stopwatch stopWatch = new Stopwatch();
+        stopWatch.Start();
 
         switch (algorithmType)
         {
@@ -44,7 +47,8 @@ internal class StringSearch
                 break;
         }
 
-        return output;
+        stopWatch.Stop();
+        return (stopWatch.Elapsed.TotalMilliseconds, output);
     }
 
     // Naive String Search Algorithm.
