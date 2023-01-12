@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows;
 
 namespace TextEditor;
 
@@ -9,7 +8,8 @@ internal class StringSearch
     public enum AlgorithmType
     {
         Naive,
-        RabinKarp
+        RabinKarp,
+        BoyerMoore
     }
 
     public static List<int> SearchString (
@@ -17,7 +17,10 @@ internal class StringSearch
         string pattern,
         AlgorithmType algorithmType = AlgorithmType.Naive)
     {
-        List<int> output;
+        List<int> output = new List<int>();
+
+        if (pattern.Length > txt.Length)
+            return output;
 
         switch (algorithmType)
         {
@@ -27,14 +30,17 @@ internal class StringSearch
             case AlgorithmType.RabinKarp:
                 output = rabinKarpSearch(txt, pattern);
                 break;
+            case AlgorithmType.BoyerMoore:
+                output = boyerMooreSearch(txt, pattern);
+                break;
             default:
-                output = new List<int>();
                 break;
         }
 
         return output;
     }
 
+    // Naive String Search Algorithm.
     private static List<int> naiveSearch(string txt, string pattern)
     {
         var indices = new List<int>();
@@ -57,6 +63,7 @@ internal class StringSearch
         return indices;
     }
 
+    // Rabin-Karp String Search Algorithm.
     private static List<int> rabinKarpSearch(string txt, string pattern, int q = 101)
     {
         var indices = new List<int>();
@@ -65,11 +72,11 @@ internal class StringSearch
         int txt_len = txt.Length;
         int pat_hash = 0;
         int txt_hash = 0;
-        int h = 1;
+        int hash = 1;
         int char_size = sizeof(char) * 256;
 
         for (int i = 0; i < pat_len - 1; i++)
-            h = (h * char_size) % q;
+            hash = (hash * char_size) % q;
 
         for (int i = 0; i < pat_len; i++)
         {
@@ -92,7 +99,7 @@ internal class StringSearch
 
             if (i < txt_len - pat_len)
             {
-                txt_hash = (char_size * (txt_hash - txt[i] * h) + txt[i + pat_len]) % q;
+                txt_hash = (char_size * (txt_hash - txt[i] * hash) + txt[i + pat_len]) % q;
 
                 if (txt_hash < 0)
                     txt_hash = (txt_hash + q);
@@ -100,5 +107,48 @@ internal class StringSearch
         }
 
         return indices;
+    }
+
+    // Boyer-Moore String Search Algorithm.
+    public static List<int> boyerMooreSearch(string txt, string pattern)
+    {
+        var indices = new List<int>();
+
+        int pat_len = pattern.Length;
+        int txt_len = txt.Length;
+
+        int[] badChar = new int[256];
+
+        badCharHeuristic(pattern, pat_len, ref badChar);
+
+        int i = 0;
+        while (i <= (txt_len - pat_len))
+        {
+            int j = pat_len - 1;
+
+            while (j >= 0 && pattern[j] == txt[i + j])
+                --j;
+
+            if (j < 0)
+            {
+                indices.Add(i);
+                i += (i + pat_len < txt_len) ? pat_len - badChar[txt[i + pat_len]] : 1;
+            }
+            else
+            {
+                i += Math.Max(1, j - badChar[txt[i + j]]);
+            }
+        }
+
+        return indices;
+    }
+
+    private static void badCharHeuristic(string txt, int size, ref int[] badChar)
+    {
+        for (int i = 0; i < 256; i++)
+            badChar[i] = -1;
+
+        for (int i = 0; i < size; i++)
+            badChar[(int)txt[i]] = i;
     }
 }

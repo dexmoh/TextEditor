@@ -105,7 +105,11 @@ public partial class MainWindow : Window
             case "Rabin-Karp":
                 algorithmType = AlgorithmType.RabinKarp;
                 break;
+            case "Boyer–Moore":
+                algorithmType = AlgorithmType.BoyerMoore;
+                break;
             default:
+                MessageBox.Show("Error.");
                 algorithmType = AlgorithmType.Naive;
                 break;
         }

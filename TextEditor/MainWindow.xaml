@@ -20,7 +20,7 @@
 
         <TextBlock x:Name="info_text"
             TextWrapping="Wrap"
-            Text="Info bar."
+            Text=""
             VerticalAlignment="Bottom"
             Height="27"
             FontSize="14"
@@ -31,12 +31,13 @@
         <ComboBox
             x:Name="search_cb"
             Height="27"
-            Width="190"
+            Width="200"
             HorizontalAlignment="Left"
             VerticalAlignment="Top" SelectionChanged="search_cb_SelectionChanged" FontSize="16"
         >
             <ComboBoxItem Content="Naive" IsSelected="True"/>
             <ComboBoxItem Content="Rabin-Karp"/>
+            <ComboBoxItem Content="Boyer–Moore"/>
         </ComboBox>
 
         <TextBox
@@ -44,11 +45,11 @@
             Text=""
             VerticalAlignment="Top"
             Height="27"
-            Margin="190,0,143,0"
+            Margin="200,0,200,0"
             FontSize="14"
             Padding="3"
             KeyDown="search_tb_KeyDown"
         />
-        <Button x:Name="search_button" Content="Search" VerticalAlignment="Top" Height="27" FontSize="16" HorizontalAlignment="Right" Width="143" Click="search_button_Click"/>
+        <Button x:Name="search_button" Content="Search" VerticalAlignment="Top" Height="27" FontSize="16" HorizontalAlignment="Right" Width="200" Click="search_button_Click"/>
     </Grid>
 </Window>
